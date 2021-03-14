@@ -7,6 +7,18 @@ public class Console {
 
 	private BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
+
+	public static Console console;
+	
+	public static Console instance() {
+		if (Console.console == null) {
+			Console.console = new Console();
+		}
+		return Console.console;
+	}
+
+
+	
 	public String readString(String title) {
 		String input = null;
 		boolean ok = false;

@@ -1,16 +1,16 @@
 package usantatecla.mastermind.controllers;
 
-import usantatecla.mastermind.models.Game;
+import usantatecla.mastermind.models.Session;
 import usantatecla.mastermind.models.State;
 
-public class StartController extends Controller {
+public class StartController extends Controller implements AcceptController{
 
-	public StartController(Game game, State state) {
-		super(game, state);
+	public StartController(Session session) {
+		super(session);
 	}
 	
 	public void start() {
-		this.state.next();
+		this.session.next();
 	}
 	
 	@Override

@@ -22,5 +22,9 @@ class ProposedCombination extends Combination {
 		}
 		return false;
 	}
+	
+	public ProposedCombination copy() {
+		return new ProposedCombination(this.colors);
+	}
 
 }

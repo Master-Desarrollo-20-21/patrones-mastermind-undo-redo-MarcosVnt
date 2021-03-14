@@ -2,20 +2,32 @@ package usantatecla.mastermind.controllers;
 
 import java.util.List;
 
-import usantatecla.mastermind.models.Combination;
-import usantatecla.mastermind.models.Game;
-import usantatecla.mastermind.models.State;
+import usantatecla.mastermind.models.Session;
 import usantatecla.mastermind.types.Color;
 import usantatecla.mastermind.types.Error;
 
 public class ProposalController extends Controller {
 
-	public ProposalController(Game game, State state) {
-		super(game, state);
+	//Mejor proponer y clase GameCOntroller
+	private ActionController actionController;
+	private UndoController undoController;
+	private RedoController redoController;
+
+	public ProposalController(Session session) {
+		super(session);
+		this.actionController = new ActionController(session);
+		this.undoController = new UndoController(session);
+		this.redoController = new RedoController(session);
+
 	}
 
 	public Error addProposedCombination(List<Color> colors) {
-		Error error = null;
+
+		// delegar en ACtion y retornar ..
+		return this.actionController.addProposedCombination(colors);	
+
+
+		/* Error error = null;
 		if (colors.size() != Combination.getWidth()) {
 			error = Error.WRONG_LENGTH;
 		} else {
@@ -37,33 +49,56 @@ public class ProposalController extends Controller {
 				this.state.next();
 			}
 		}
-		return error;	
+		return error;	 */
 	}
 
 	public boolean isWinner() {
-		return this.game.isWinner();
+		return this.actionController.isWinner();
 	}
 
 	public boolean isLooser() {
-		return this.game.isLooser();
+		return this.actionController.isLooser();
 	}
 	
 	public int getAttempts() {
-		return this.game.getAttempts();
+		return this.actionController.getAttempts();
 	}
 
 	public List<Color> getColors(int position) {
-		return this.game.getColors(position);
+		return this.actionController.getColors(position);
 	}
 
 	public int getBlacks(int position) {
-		return this.game.getBlacks(position);
+		return this.actionController.getBlacks(position);
 	}
 
 	public int getWhites(int position) {
-		return this.game.getWhites(position);
+		return this.actionController.getWhites(position);
+	}
+
+
+	
+	public void undo() {
+		this.undoController.undo();
+	}
+
+	public boolean isUndoable() {
+		return this.undoController.isUndoable();
+	}
+
+	public void redo() {
+		this.redoController.redo();
+	}
+
+	public boolean isRedoable() {
+		return this.redoController.isRedoable();
 	}
 	
+
+
+
+	
+	//tecnica doble despacho
 	@Override
 	public void accept(ControllersVisitor controllersVisitor) {
 		controllersVisitor.visit(this);
